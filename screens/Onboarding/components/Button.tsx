@@ -17,12 +17,15 @@ type ButtonProps = {
   flatListRef: RefObject<FlatList>;
   flatListIndex: SharedValue<number>;
   dataLength: number;
+  navigation: any; // Add this line
+
 };
 
 export function Button({
   dataLength,
   flatListIndex,
   flatListRef,
+  navigation,
 }: ButtonProps) {
   const buttonAnimationStyle = useAnimatedStyle(() => {
     const isLastScreen = flatListIndex.value === dataLength - 1;
@@ -55,7 +58,11 @@ export function Button({
 
   const handleNextScreen = () => {
     const isLastScreen = flatListIndex.value === dataLength - 1;
-    if (!isLastScreen) {
+    if (isLastScreen) {
+      // Use navigation.navigate to go to the Home screen
+      navigation.navigate('Home');
+    } else {
+      // Existing code to scroll to the next item
       flatListRef.current?.scrollToIndex({ index: flatListIndex.value + 1 });
     }
   };

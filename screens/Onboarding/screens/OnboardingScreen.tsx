@@ -21,6 +21,8 @@ import { Button } from '../components/Button';
 import { Pagination } from '../components/Pagination';
 import { theme } from '../constants/theme';
 import { data, type Data } from '../data/screens';
+import { useNavigation } from "@react-navigation/native";
+
 
 const RenderItem = ({
   item,
@@ -113,6 +115,7 @@ const RenderItem = ({
 export default function Onboarding() {
   const { width: SCREEN_WIDTH } = useWindowDimensions();
   const flatListRef = useAnimatedRef<FlatList>();
+  const navigation = useNavigation()
 
   const flatListIndex = useSharedValue(0);
   const x = useSharedValue(0);
@@ -156,6 +159,7 @@ export default function Onboarding() {
           flatListRef={flatListRef}
           flatListIndex={flatListIndex}
           dataLength={data.length}
+          navigation={navigation}
         />
       </View>
     </View>
