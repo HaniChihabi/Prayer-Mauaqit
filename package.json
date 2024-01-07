@@ -15,6 +15,7 @@
     "@react-navigation/native-stack": "^6.9.17",
     "@types/react": "~18.2.14",
     "expo": "~49.0.15",
+    "expo-image-picker": "^14.5.0",
     "expo-status-bar": "~1.6.0",
     "lottie-react-native": "5.1.6",
     "react": "18.2.0",
