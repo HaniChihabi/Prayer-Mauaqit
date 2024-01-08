@@ -4,7 +4,7 @@ import { useRoute, useIsFocused } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native';
 import Onboarding from '../Onboarding/screens/OnboardingScreen';
 import * as ImagePicker from 'expo-image-picker';
-import { Entypo, AntDesign, Feather } from '@expo/vector-icons'; 
+import { Entypo, AntDesign, Feather, MaterialCommunityIcons, Ionicons, Fontisto } from '@expo/vector-icons'; 
 
 
 
@@ -82,33 +82,33 @@ const sendImageToApi = async (uri) => {
           </View>
           <View className="w-11/12 h-2/6 justify-center items-center border rounded-2xl border-amber-200 mb-10 flex-box top-">
             <View className="flex-row items-center">
-            <Feather name="sunrise" size={24} color="black" />
+            <MaterialCommunityIcons name="weather-sunset" size={24} color="black" />
               <Text className={"w-56 bg-amber-200"}>
                 Fadjr
               </Text>
             </View>
             <View className="flex-row items-center">
-            <Feather name="sunrise" size={24} color="black" />
+            <Feather name="sun" size={24} color="black" />
               <Text className={"w-56 bg-amber-200"}>
-                Fadjr
+                Duhgur
               </Text>
             </View>
             <View className="flex-row items-center">
             <Feather name="sunrise" size={24} color="black" />
               <Text className={"w-56 bg-amber-200"}>
-                Fadjr
+                Asr
               </Text>
             </View>
             <View className="flex-row items-center">
-            <Feather name="sunrise" size={24} color="black" />
+            <Ionicons name="cloudy-night-outline" size={24} color="black" />
               <Text className={"w-56 bg-amber-200"}>
-                Fadjr
+                Maghrib
               </Text>
             </View>
             <View className="flex-row items-center">
-            <Feather name="sunrise" size={24} color="black" />
+            <MaterialCommunityIcons name="weather-night" size={24} color="black" />
               <Text className={"w-56 bg-amber-200"}>
-                Fadjr
+                Ishaa
               </Text>
             </View>
     <View>
