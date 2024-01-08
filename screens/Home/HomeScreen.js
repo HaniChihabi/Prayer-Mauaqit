@@ -2,7 +2,6 @@ import {View, Text, TextInput, Button, Stylesheet, TouchableOpacity, Dimensions,
 import React, { useState, useEffect } from 'react';
 import { useRoute, useIsFocused } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native';
-import Onboarding from '../Onboarding/screens/OnboardingScreen';
 import * as ImagePicker from 'expo-image-picker';
 import { Entypo, AntDesign, Feather, MaterialCommunityIcons, Ionicons, Fontisto } from '@expo/vector-icons'; 
 
@@ -74,49 +73,49 @@ const sendImageToApi = async (uri) => {
     return(
 
 
-        <SafeAreaView className="flex-1 justify-center items-center top-0 bg-white">
-          <View className="absolute top-[10%] text-2xl">
-            <Text className="text-4xl font-medium">
-              Hannover
+      <SafeAreaView className="flex-1 justify-center items-center top-0 bg-white">
+
+        {/* CITY NAME */}
+        <View className="absolute top-[10%] text-2xl">
+          <Text className="text-4xl font-medium">
+            Hannover
+          </Text>
+        </View>
+
+        {/* BIG SCREEN */}
+        <View className="w-11/12 h-2/6 justify-center items-center border rounded-2xl border-amber-200 mb-10 flex-box top-">
+          <View className="flex-row items-center">
+            <MaterialCommunityIcons name="weather-sunset" size={24} color="black" />
+            <Text className={"w-56 bg-amber-200"}>
+              Fadjr
             </Text>
           </View>
-          <View className="w-11/12 h-2/6 justify-center items-center border rounded-2xl border-amber-200 mb-10 flex-box top-">
-            <View className="flex-row items-center">
-            <MaterialCommunityIcons name="weather-sunset" size={24} color="black" />
-              <Text className={"w-56 bg-amber-200"}>
-                Fadjr
-              </Text>
-            </View>
-            <View className="flex-row items-center">
+          <View className="flex-row items-center">
             <Feather name="sun" size={24} color="black" />
-              <Text className={"w-56 bg-amber-200"}>
-                Duhgur
-              </Text>
-            </View>
-            <View className="flex-row items-center">
+            <Text className={"w-56 bg-amber-200"}>
+              Duhgur
+            </Text>
+          </View>
+          <View className="flex-row items-center">
             <Feather name="sunrise" size={24} color="black" />
-              <Text className={"w-56 bg-amber-200"}>
-                Asr
-              </Text>
-            </View>
-            <View className="flex-row items-center">
+            <Text className={"w-56 bg-amber-200"}>
+              Asr
+            </Text>
+          </View>
+          <View className="flex-row items-center">
             <Ionicons name="cloudy-night-outline" size={24} color="black" />
-              <Text className={"w-56 bg-amber-200"}>
-                Maghrib
-              </Text>
-            </View>
-            <View className="flex-row items-center">
+            <Text className={"w-56 bg-amber-200"}>
+              Maghrib
+            </Text>
+          </View>
+          <View className="flex-row items-center">
             <MaterialCommunityIcons name="weather-night" size={24} color="black" />
-              <Text className={"w-56 bg-amber-200"}>
-                Ishaa
-              </Text>
-            </View>
-    <View>
-                    <TextInput
-                        placeholder="Enter City"
-                        value={city}
-                        onChangeText={setCity}
-                />
+            <Text className={"w-56 bg-amber-200"}>
+              Ishaa
+            </Text>
+          </View>
+        
+          {/* SEARCH BUTTON */}
               <TouchableOpacity className="bg-amber-200 w-28 h-14 justify-center items-center rounded-2xl relative top-0" title="Get Prayer Times" onPress={getPrayerTimes}>
                 <Text className="text-lg font-thin">
                   Select City
@@ -127,25 +126,34 @@ const sendImageToApi = async (uri) => {
                   {JSON.stringify(prayerTimes, null, 2)}
                 </Text>     
               )} */}
-          
-                </View>
-          </View>
-            
-            <TouchableOpacity className="w-10 h-10 bg-amber-50 justify-center items-center absolute top-[10%] right-[10%] rounded-2xl " onPress={handleReset}>
-                <Text>i</Text>
-            </TouchableOpacity>
-            <View className="flex-row">
-            <TouchableOpacity className="w-[43%] h-2/3 rounded-2xl justify-center items-center mr-5 border-2 border-teal-200 " onPress={pickImage}>
-            <Entypo name="upload" size={40} color="turquoise" />
-                <Text className="text-lg mt-7 font-thin">Upload</Text>
-            </TouchableOpacity>
-            <TouchableOpacity className="w-[43%] h-2/3 rounded-2xl justify-center items-center border border-red-200">
-            <AntDesign name="scan1" size={40} color="pink" />
-                <Text className="text-lg font-thin mt-7" >Scan</Text>
-            </TouchableOpacity>
-            </View>
-        </SafeAreaView>
 
-        )
+          {/* SEARCH BAR */}
+          <View>
+            <TextInput
+              placeholder="Enter City"
+              value={city}
+              onChangeText={setCity}
+            />
+          </View>
+        </View>
+        
+        {/* RESET BUTTON */}
+        <TouchableOpacity className="w-10 h-10 bg-amber-50 justify-center items-center absolute top-[10%] right-[10%] rounded-2xl " onPress={handleReset}>
+            <Text className="font-light text-lg">i</Text>
+        </TouchableOpacity>
+
+        {/* BUTTONS */}
+        <View className="flex-row">
+          <TouchableOpacity className="w-[43%] h-2/3 rounded-2xl justify-center items-center mr-5 border-2 border-teal-200 " onPress={pickImage}>
+            <Entypo name="upload" size={40} color="turquoise" />
+            <Text className="text-lg mt-7 font-thin">Upload</Text>
+          </TouchableOpacity>
+          <TouchableOpacity className="w-[43%] h-2/3 rounded-2xl justify-center items-center border border-red-200">
+            <AntDesign name="scan1" size={40} color="pink" />
+            <Text className="text-lg font-thin mt-7" >Scan</Text>
+          </TouchableOpacity>
+        </View>
+      </SafeAreaView>
+    )
 }
 
