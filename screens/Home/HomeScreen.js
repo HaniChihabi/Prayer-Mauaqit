@@ -71,101 +71,98 @@ const sendImageToApi = async (uri) => {
     }
   };
     return(
-        <SafeAreaView style={styles.container}>
-            <TouchableOpacity style={styles.info} onPress={handleReset}>
-                <Text>i</Text>
-            </TouchableOpacity>
-            <View style={styles.cardContainer}>
-            <TouchableOpacity style={styles.upload} onPress={pickImage}>
-                <Text>Upload</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.scan}>
-                <Text>Scan</Text>
-            </TouchableOpacity>
-            </View>
-            <View style={styles.fetchingCity}>
+        <SafeAreaView className="flex-1 justify-center items-center top-0 bg-white">
+            
+            <View>
                 <TextInput
-                    style={styles.input}
                     placeholder="Enter City"
                     value={city}
                     onChangeText={setCity}
             />
-            
-      <Button title="Get Prayer Times" onPress={getPrayerTimes} />
-      {/* {prayerTimes && (
-        <Text style={styles.result}>
-          {JSON.stringify(prayerTimes, null, 2)}
-        </Text>
-            
-            
-      )} */}
+          <Button title="Get Prayer Times" onPress={getPrayerTimes} />
+          {/* {prayerTimes && (
+            <Text style={styles.result}>
+              {JSON.stringify(prayerTimes, null, 2)}
+            </Text>     
+          )} */}
       
+            </View>
+            <TouchableOpacity className="w-10 h-10 bg-slate-300 justify-center items-center absolute top-[10%] right-[10%] rounded-2xl " onPress={handleReset}>
+                <Text>i</Text>
+            </TouchableOpacity>
+            <View className="flex-row">
+            <TouchableOpacity className="w-28 h-20 rounded-lg justify-center items-center mr-8 border-2 border-yellow-200 " onPress={pickImage}>
+                <Text className="text-lg">Upload</Text>
+            </TouchableOpacity>
+            <TouchableOpacity className="w-28 h-20 bg-white rounded-lg justify-center items-center border-2 border-yellow-200 ">
+                <Text className="text-lg" >Scan</Text>
+            </TouchableOpacity>
             </View>
         </SafeAreaView>
         )
 }
 
 
-const styles = StyleSheet.create({
-    container:{
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        top: '0%'
-    },
-    cardContainer:{
-        flexDirection: 'row',
-        top: '10%'
-    },
-    upload:{
-        width: 120,
-        height: 70,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#f0f0f0', // Example color
-        marginRight: 10,
-        borderRadius: 10,
-        elevation: 3, // This adds a shadow on Android
-        shadowColor: '#000', // Shadow for iOS
-        shadowOffset: { width: 0, height: 2 }, // Shadow for iOS,
-        shadowRadius: 6, // Shadow for iOS
-        shadowOpacity: 0.3, // Shadow for iOS
-    },
-    scan:{
-        width: 120,
-        height: 70,
-        backgroundColor: '#f0f0f0', // Example color
-        borderRadius: 10,
-        elevation: 3, // This adds a shadow on Android
-        shadowColor: '#000', // Shadow for iOS
-        shadowOffset: { width: 0, height: 2 }, // Shadow for iOS,
-        shadowRadius: 6, // Shadow for iOS
-        shadowOpacity: 0.3, // Shadow for iOS
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginLeft: 10
+// const styles = StyleSheet.create({
+//     container:{
+//         flex: 1,
+//         justifyContent: 'center',
+//         alignItems: 'center',
+//         top: '0%'
+//     },
+//     cardContainer:{
+//         flexDirection: 'row',
+//         top: '10%'
+//     },
+//     upload:{
+//         width: 120,
+//         height: 70,
+//         justifyContent: 'center',
+//         alignItems: 'center',
+//         backgroundColor: '#f0f0f0', // Example color
+//         marginRight: 10,
+//         borderRadius: 10,
+//         elevation: 3, // This adds a shadow on Android
+//         shadowColor: '#000', // Shadow for iOS
+//         shadowOffset: { width: 0, height: 2 }, // Shadow for iOS,
+//         shadowRadius: 6, // Shadow for iOS
+//         shadowOpacity: 0.3, // Shadow for iOS
+//     },
+//     scan:{
+//         width: 120,
+//         height: 70,
+//         backgroundColor: '#f0f0f0', // Example color
+//         borderRadius: 10,
+//         elevation: 3, // This adds a shadow on Android
+//         shadowColor: '#000', // Shadow for iOS
+//         shadowOffset: { width: 0, height: 2 }, // Shadow for iOS,
+//         shadowRadius: 6, // Shadow for iOS
+//         shadowOpacity: 0.3, // Shadow for iOS
+//         justifyContent: 'center',
+//         alignItems: 'center',
+//         marginLeft: 10
 
-    },
-    info:{
-        width: 30,
-        height: 30,
-        backgroundColor: 'lightgrey',
-        borderRadius: '100%',
-        alignItems: 'center',
-        justifyContent: 'center',
-        position: 'absolute',
-        top: '10%',
-        right: '10%'
-    },
-    fetchingCity:{
-        position: 'absolute',
-        top: '20%',
-        borderRadius: '50%'
-    },
-    input: {
-        backgroundColor: 'white'
-    },
-    result: {
-        backgroundColor: 'blue',
-    },
-    });
+//     },
+//     info:{
+//         width: 30,
+//         height: 30,
+//         backgroundColor: 'lightgrey',
+//         borderRadius: '100%',
+//         alignItems: 'center',
+//         justifyContent: 'center',
+//         position: 'absolute',
+//         top: '10%',
+//         right: '10%'
+//     },
+//     fetchingCity:{
+//         position: 'absolute',
+//         top: '20%',
+//         borderRadius: '50%'
+//     },
+//     input: {
+//         backgroundColor: 'white'
+//     },
+//     result: {
+//         backgroundColor: 'blue',
+//     },
+//     });
