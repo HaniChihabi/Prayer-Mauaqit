@@ -4,6 +4,12 @@ import { useRoute, useIsFocused } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native';
 import Onboarding from '../Onboarding/screens/OnboardingScreen';
 import * as ImagePicker from 'expo-image-picker';
+import { Entypo } from '@expo/vector-icons'; 
+import { AntDesign } from '@expo/vector-icons'; 
+import { Fab } from '@gluestack-ui/themed';
+import { GluestackUIProvider, Box } from "@gluestack-ui/themed";
+import { config } from "@gluestack-ui/config";
+import { VStack, HStack, Avatar, AvatarImage, Heading, FabIcon, EditIcon, NativeBaseProvider } from 'native-base';
 
 
 
@@ -71,8 +77,9 @@ const sendImageToApi = async (uri) => {
     }
   };
     return(
+
+
         <SafeAreaView className="flex-1 justify-center items-center top-0 bg-white">
-            
             <View>
                 <TextInput
                     placeholder="Enter City"
@@ -91,78 +98,17 @@ const sendImageToApi = async (uri) => {
                 <Text>i</Text>
             </TouchableOpacity>
             <View className="flex-row">
-            <TouchableOpacity className="w-28 h-20 rounded-lg justify-center items-center mr-8 border-2 border-yellow-200 " onPress={pickImage}>
+            <TouchableOpacity className="w-1/3 h-2/3 rounded-2xl justify-center items-center mr-8 border-2 border-yellow-200 " onPress={pickImage}>
+            <Entypo name="upload" size={40} color="#fde68a" />
                 <Text className="text-lg">Upload</Text>
             </TouchableOpacity>
-            <TouchableOpacity className="w-28 h-20 bg-white rounded-lg justify-center items-center border-2 border-yellow-200 ">
+            <TouchableOpacity className="w-1/3 h-2/3 bg-white rounded-2xl justify-center items-center border-2 border-yellow-200 ">
+            <AntDesign name="scan1" size={40} color="#fde68a" />
                 <Text className="text-lg" >Scan</Text>
             </TouchableOpacity>
             </View>
         </SafeAreaView>
+
         )
 }
 
-
-// const styles = StyleSheet.create({
-//     container:{
-//         flex: 1,
-//         justifyContent: 'center',
-//         alignItems: 'center',
-//         top: '0%'
-//     },
-//     cardContainer:{
-//         flexDirection: 'row',
-//         top: '10%'
-//     },
-//     upload:{
-//         width: 120,
-//         height: 70,
-//         justifyContent: 'center',
-//         alignItems: 'center',
-//         backgroundColor: '#f0f0f0', // Example color
-//         marginRight: 10,
-//         borderRadius: 10,
-//         elevation: 3, // This adds a shadow on Android
-//         shadowColor: '#000', // Shadow for iOS
-//         shadowOffset: { width: 0, height: 2 }, // Shadow for iOS,
-//         shadowRadius: 6, // Shadow for iOS
-//         shadowOpacity: 0.3, // Shadow for iOS
-//     },
-//     scan:{
-//         width: 120,
-//         height: 70,
-//         backgroundColor: '#f0f0f0', // Example color
-//         borderRadius: 10,
-//         elevation: 3, // This adds a shadow on Android
-//         shadowColor: '#000', // Shadow for iOS
-//         shadowOffset: { width: 0, height: 2 }, // Shadow for iOS,
-//         shadowRadius: 6, // Shadow for iOS
-//         shadowOpacity: 0.3, // Shadow for iOS
-//         justifyContent: 'center',
-//         alignItems: 'center',
-//         marginLeft: 10
-
-//     },
-//     info:{
-//         width: 30,
-//         height: 30,
-//         backgroundColor: 'lightgrey',
-//         borderRadius: '100%',
-//         alignItems: 'center',
-//         justifyContent: 'center',
-//         position: 'absolute',
-//         top: '10%',
-//         right: '10%'
-//     },
-//     fetchingCity:{
-//         position: 'absolute',
-//         top: '20%',
-//         borderRadius: '50%'
-//     },
-//     input: {
-//         backgroundColor: 'white'
-//     },
-//     result: {
-//         backgroundColor: 'blue',
-//     },
-//     });
