@@ -6,10 +6,6 @@ import Onboarding from '../Onboarding/screens/OnboardingScreen';
 import * as ImagePicker from 'expo-image-picker';
 import { Entypo } from '@expo/vector-icons'; 
 import { AntDesign } from '@expo/vector-icons'; 
-import { Fab } from '@gluestack-ui/themed';
-import { GluestackUIProvider, Box } from "@gluestack-ui/themed";
-import { config } from "@gluestack-ui/config";
-import { VStack, HStack, Avatar, AvatarImage, Heading, FabIcon, EditIcon, NativeBaseProvider } from 'native-base';
 
 
 
@@ -69,7 +65,7 @@ const sendImageToApi = async (uri) => {
           // Include any other headers like API keys
         },
       });
-  
+
       setAnalysisResult(JSON.stringify(response.data, null, 2));
     } catch (error) {
       console.error("Error sending image to API: ", error);
@@ -80,31 +76,38 @@ const sendImageToApi = async (uri) => {
 
 
         <SafeAreaView className="flex-1 justify-center items-center top-0 bg-white">
-            <View>
-                <TextInput
-                    placeholder="Enter City"
-                    value={city}
-                    onChangeText={setCity}
-            />
-          <Button title="Get Prayer Times" onPress={getPrayerTimes} />
-          {/* {prayerTimes && (
-            <Text style={styles.result}>
-              {JSON.stringify(prayerTimes, null, 2)}
-            </Text>     
-          )} */}
-      
-            </View>
-            <TouchableOpacity className="w-10 h-10 bg-slate-300 justify-center items-center absolute top-[10%] right-[10%] rounded-2xl " onPress={handleReset}>
+          <View className="w-11/12 h-2/6 justify-center items-center border rounded-2xl border-amber-200 mb-10">
+    <View>
+                    <TextInput
+                        placeholder="Enter City"
+                        value={city}
+                        onChangeText={setCity}
+                />
+              <TouchableOpacity className="bg-amber-200 w-28 h-14 justify-center items-center rounded-2xl relative top-0" title="Get Prayer Times" onPress={getPrayerTimes}>
+                <Text className="text-lg font-thin">
+                  Select City
+                </Text>
+              </TouchableOpacity>
+              {/* {prayerTimes && (
+                <Text style={styles.result}>
+                  {JSON.stringify(prayerTimes, null, 2)}
+                </Text>     
+              )} */}
+          
+                </View>
+          </View>
+            
+            <TouchableOpacity className="w-10 h-10 bg-amber-50 justify-center items-center absolute top-[10%] right-[10%] rounded-2xl " onPress={handleReset}>
                 <Text>i</Text>
             </TouchableOpacity>
             <View className="flex-row">
-            <TouchableOpacity className="w-1/3 h-2/3 rounded-2xl justify-center items-center mr-8 border-2 border-yellow-200 " onPress={pickImage}>
-            <Entypo name="upload" size={40} color="#fde68a" />
-                <Text className="text-lg">Upload</Text>
+            <TouchableOpacity className="w-[43%] h-2/3 rounded-2xl justify-center items-center mr-5 border-2 border-teal-200 " onPress={pickImage}>
+            <Entypo name="upload" size={40} color="turquoise" />
+                <Text className="text-lg mt-7 font-thin">Upload</Text>
             </TouchableOpacity>
-            <TouchableOpacity className="w-1/3 h-2/3 bg-white rounded-2xl justify-center items-center border-2 border-yellow-200 ">
-            <AntDesign name="scan1" size={40} color="#fde68a" />
-                <Text className="text-lg" >Scan</Text>
+            <TouchableOpacity className="w-[43%] h-2/3 rounded-2xl justify-center items-center border border-red-200">
+            <AntDesign name="scan1" size={40} color="pink" />
+                <Text className="text-lg font-thin mt-7" >Scan</Text>
             </TouchableOpacity>
             </View>
         </SafeAreaView>
