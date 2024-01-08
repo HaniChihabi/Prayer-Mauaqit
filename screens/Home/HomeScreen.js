@@ -76,7 +76,7 @@ const sendImageToApi = async (uri) => {
 
         <SafeAreaView className="flex-1 justify-center items-center top-0 bg-white">
           <View className="absolute top-[10%] text-2xl">
-            <Text className="text-4xl">
+            <Text className="text-4xl font-medium">
               Hannover
             </Text>
           </View>
