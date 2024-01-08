@@ -4,8 +4,7 @@ import { useRoute, useIsFocused } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native';
 import Onboarding from '../Onboarding/screens/OnboardingScreen';
 import * as ImagePicker from 'expo-image-picker';
-import { Entypo } from '@expo/vector-icons'; 
-import { AntDesign } from '@expo/vector-icons'; 
+import { Entypo, AntDesign, Feather } from '@expo/vector-icons'; 
 
 
 
@@ -76,7 +75,42 @@ const sendImageToApi = async (uri) => {
 
 
         <SafeAreaView className="flex-1 justify-center items-center top-0 bg-white">
-          <View className="w-11/12 h-2/6 justify-center items-center border rounded-2xl border-amber-200 mb-10">
+          <View className="absolute top-[10%] text-2xl">
+            <Text className="text-4xl">
+              Hannover
+            </Text>
+          </View>
+          <View className="w-11/12 h-2/6 justify-center items-center border rounded-2xl border-amber-200 mb-10 flex-box top-">
+            <View className="flex-row items-center">
+            <Feather name="sunrise" size={24} color="black" />
+              <Text className={"w-56 bg-amber-200"}>
+                Fadjr
+              </Text>
+            </View>
+            <View className="flex-row items-center">
+            <Feather name="sunrise" size={24} color="black" />
+              <Text className={"w-56 bg-amber-200"}>
+                Fadjr
+              </Text>
+            </View>
+            <View className="flex-row items-center">
+            <Feather name="sunrise" size={24} color="black" />
+              <Text className={"w-56 bg-amber-200"}>
+                Fadjr
+              </Text>
+            </View>
+            <View className="flex-row items-center">
+            <Feather name="sunrise" size={24} color="black" />
+              <Text className={"w-56 bg-amber-200"}>
+                Fadjr
+              </Text>
+            </View>
+            <View className="flex-row items-center">
+            <Feather name="sunrise" size={24} color="black" />
+              <Text className={"w-56 bg-amber-200"}>
+                Fadjr
+              </Text>
+            </View>
     <View>
                     <TextInput
                         placeholder="Enter City"
