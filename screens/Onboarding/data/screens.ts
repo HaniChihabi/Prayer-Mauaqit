@@ -11,21 +11,21 @@ export const data: Data[] = [
     animation: require('../assets/lottie3.json'),
     title: 'Prayer Mauaqit',
     subtitle: 'Your Personal Prayer Scheduler', // Example subtitle
-    text: 'Welcome to Prayer Mauaqit! Upload or scan the prayer times of your local mosque and get them added into your calendar.',
+    text: 'Welcome to Prayer Mauaqit! Lets add the Mauaqit into your calendar.',
   },
   {
     id: 2,
-    animation: require('../assets/lottie2.json'),
-    title: 'Upload',
+    animation: require('../assets/Scan.json'),
+    title: 'Upload or Scan',
     subtitle: 'Easy and Efficient', // Example subtitle
-    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+    text: 'Upload or take a picture of your prayer Times to add them into your calendar',
   },
   {
     id: 3,
-    animation: require('../assets/lottie1.json'),
-    title: 'Lorem Ipsum',
+    animation: require('../assets/Loop.json'),
+    title: 'Search for City',
     subtitle: 'Classic Placeholder', // Example subtitle
-    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+    text: 'Enter your City into the searchbar and use the prayer times provided by our Prayer Times API',
   },
 ];
 
