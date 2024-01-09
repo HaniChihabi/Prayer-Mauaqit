@@ -76,71 +76,70 @@ const sendImageToApi = async (uri) => {
       <SafeAreaView className="flex-1 justify-center items-center top-0 bg-white">
 
         {/* CITY NAME */}
-        <View className="absolute top-[10%] text-2xl">
+        <View className="  text-2xl h-56 items-center justify-center">
           <Text className="text-4xl font-medium">
             Hannover
           </Text>
         </View>
 
+        {/* RESET BUTTON */}
+        <TouchableOpacity className="w-10 h-10 bg-amber-100 justify-center items-center absolute top-[10%] right-[10%] rounded-2xl " onPress={handleReset}>
+            <Text className="font-light text-lg">i</Text>
+        </TouchableOpacity>
+
         {/* BIG SCREEN */}
-        <View className="w-11/12 h-2/6 justify-center items-center border rounded-2xl border-amber-200 mb-10 flex-box top-">
-          <View className="flex-row items-center">
-            <MaterialCommunityIcons name="weather-sunset" size={24} color="black" />
-            <Text className={"w-56 bg-amber-200"}>
+        <View className="w-11/12 h-1/3 border rounded-2xl border-amber-200 mb-10 flex-row flex-wrap">
+          <View className="flex-row items-center w-6/12 p-6">
+            <MaterialCommunityIcons name="weather-sunset" size={32} color="black" />
+            <Text className={"text-2xl ml-3 font-light"}>
               Fadjr
             </Text>
           </View>
-          <View className="flex-row items-center">
-            <Feather name="sun" size={24} color="black" />
-            <Text className={"w-56 bg-amber-200"}>
-              Duhgur
+          <View className="flex-row items-center w-6/12 p-6">
+            <Feather name="sun" size={32} color="black" />
+            <Text className={"text-2xl ml-3 font-light"}>
+              Duhur
             </Text>
           </View>
-          <View className="flex-row items-center">
-            <Feather name="sunrise" size={24} color="black" />
-            <Text className={"w-56 bg-amber-200"}>
+          <View className="flex-row items-center w-6/12 p-6">
+            <Feather name="sunrise" size={32} color="black" />
+            <Text className={"text-2xl ml-3 font-light"}>
               Asr
             </Text>
           </View>
-          <View className="flex-row items-center">
-            <Ionicons name="cloudy-night-outline" size={24} color="black" />
-            <Text className={"w-56 bg-amber-200"}>
+          <View className="flex-row items-center w-6/12 p-6 ">
+            <Ionicons name="cloudy-night-outline" size={32} color="black" />
+            <Text className={"text-2xl ml-3 font-light"}>
               Maghrib
             </Text>
           </View>
-          <View className="flex-row items-center">
-            <MaterialCommunityIcons name="weather-night" size={24} color="black" />
-            <Text className={"w-56 bg-amber-200"}>
+          <View className="flex-row items-center w-6/12 p-6 font-light">
+            <MaterialCommunityIcons name="weather-night" size={32} color="black" />
+            <Text className={"text-2xl ml-3 font-light"}>
               Ishaa
             </Text>
           </View>
         
           {/* SEARCH BUTTON */}
-              <TouchableOpacity className="bg-amber-200 w-28 h-14 justify-center items-center rounded-2xl relative top-0" title="Get Prayer Times" onPress={getPrayerTimes}>
-                <Text className="text-lg font-thin">
-                  Select City
-                </Text>
-              </TouchableOpacity>
-              {/* {prayerTimes && (
-                <Text style={styles.result}>
-                  {JSON.stringify(prayerTimes, null, 2)}
-                </Text>     
-              )} */}
-
+          <View className={"justify-center items-center"}>
+            <TouchableOpacity className="bg-amber-200 w-28 h-14 justify-center items-center rounded-2xl relative top-0" title="Get Prayer Times" onPress={getPrayerTimes}>
+              <Text className="text-lg font-thin">
+                Select City
+              </Text>
+            </TouchableOpacity>
+            {/* {prayerTimes && (
+              <Text style={styles.result}>
+                {JSON.stringify(prayerTimes, null, 2)}
+              </Text>     
+            )} */}
           {/* SEARCH BAR */}
-          <View>
             <TextInput
               placeholder="Enter City"
               value={city}
               onChangeText={setCity}
             />
           </View>
-        </View>
-        
-        {/* RESET BUTTON */}
-        <TouchableOpacity className="w-10 h-10 bg-amber-50 justify-center items-center absolute top-[10%] right-[10%] rounded-2xl " onPress={handleReset}>
-            <Text className="font-light text-lg">i</Text>
-        </TouchableOpacity>
+              </View>
 
         {/* BUTTONS */}
         <View className="flex-row">
