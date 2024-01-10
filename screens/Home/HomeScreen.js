@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
 import { Entypo, AntDesign, Feather, MaterialCommunityIcons, Ionicons, Fontisto } from '@expo/vector-icons'; 
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
 
 
 export default HomeScreen = () => {
@@ -35,23 +36,61 @@ const pickImage =  async() => {
     }
 }
 
-const [city, setCity] = useState('');
+const [cityName, setCityName] = useState('');
   const [prayerTimes, setPrayerTimes] = useState(null);
+  const [suggestions, setSuggestions] = useState([]);
+
+
+
 
   const getPrayerTimes = async () => {
+    if(cityName.trim() === '') {
+      alert("wrong city")
+      console.log("wrong city")
+      return;
+    }
     try {
-      const response = await fetch(`http://api.aladhan.com/v1/timingsByCity?city=${city}&country=United Arab Emirates&method=8`);
+      const response = await fetch(`https://dailyprayer.abdulrcs.repl.co/api/${cityName}`);
       const data = await response.json();
-      setFajrTime(data.data.timings.Fajr);
-      setDhuhrTime(data.data.timings.Dhuhr);
-      setAsrTime(data.data.timings.Asr);
-      setMaghribTime(data.data.timings.Maghrib);
-      setIshaTime(data.data.timings.Isha);
+      console.log({cityName})
+      if(response.status === 200) {
+        setFajrTime(data.today.timings.Fajr);
+        setDhuhrTime(data.data.timings.Dhuhr);
+        setAsrTime(data.data.timings.Asr);
+        setMaghribTime(data.data.timings.Maghrib);
+        setIshaTime(data.data.timings.Isha);
+
+    } else{
+        alert("Bali")
+    }
     } catch (error) {
-      console.error("Error fetching prayer times: ", error);
-      setPrayerTimes(null);
+        console.error("Error fetching prayer times: ", error);
+        setPrayerTimes(null);
     } 
   };
+
+  const fetchsuggestions = async  (input) => {
+    if (input.length > 0) {
+      try {
+        setSuggestions([]);
+        const options= {
+          method: 'GET',
+          url: 'https://wft-geo-db.p.rapidapi.com/v1/geo/cities',
+          params: { namePrefix: input, minPopulation: 10000, limit: 5 },
+          headers: {
+                    'X-RapidAPI-Host': 'wft-geo-db.p.rapidapi.com',
+                    'X-RapidAPI-Key': 'e88ee664bdmshad6c6505a38d94cp144614jsndeb85cd45b61' 
+          }
+         }
+          const response = await axios.request(options);
+          const cities = response.data.data.map(city => `${city.name}, ${city.countryCode}`);
+          setSuggestions(cities)
+      }
+      catch (error) {
+        setSuggestions([])
+      }
+    }
+  }
     
 
   
@@ -141,15 +180,37 @@ const sendImageToApi = async (uri) => {
           <View className={"justify-center items-center flex-row space-x-5 m-5"}>
             <TextInput
               placeholder="Enter City"
-              value={city}
-              onChangeText={setCity}
+              value={cityName}
+              onChangeText={(text)=>{
+                setCityName(text)
+                fetchsuggestions([text])
+              }}
+              
               className={"p-4 border-[1px] rounded-2xl w-[45%]"}
             />
+
+            {/* FETCHING SUGGESTIONS */}
+            {suggestions.length > 0 && (
+              <View className={" absolute  bg-slate-300 w-[90%] h-10"}>
+                {suggestions.map((suggestion, index) =>(
+                  <TouchableOpacity
+                  key= {index}
+                  onPress={() => {
+                    setCityName(suggestion)
+                    setSuggestions([])
+                  }}
+                  >
+                  <Text>{suggestion}</Text>
+                  </TouchableOpacity>
+                ))}
+            </View>
+            )}
             <TouchableOpacity className="bg-amber-200 w-[45%] h-14 justify-center items-center rounded-2xl relative top-0 border-[1px]" title="Get Prayer Times" onPress={getPrayerTimes}>
               <Text className="text-lg font-thin">
                 Select City
               </Text>
             </TouchableOpacity>
+            
             {prayerTimes && (
               <Text >
                 {JSON.stringify(prayerTimes, null, 2)}
