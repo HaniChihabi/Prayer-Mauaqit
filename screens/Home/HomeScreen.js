@@ -189,22 +189,7 @@ const sendImageToApi = async (uri) => {
               className={"p-4 border-[1px] rounded-2xl w-[45%]"}
             />
 
-            {/* FETCHING SUGGESTIONS */}
-            {suggestions.length > 0 && (
-              <View className={" absolute  bg-slate-300 w-[90%] h-10"}>
-                {suggestions.map((suggestion, index) =>(
-                  <TouchableOpacity
-                  key= {index}
-                  onPress={() => {
-                    setCityName(suggestion)
-                    setSuggestions([])
-                  }}
-                  >
-                  <Text>{suggestion}</Text>
-                  </TouchableOpacity>
-                ))}
-            </View>
-            )}
+            
             <TouchableOpacity className="bg-amber-200 w-[45%] h-14 justify-center items-center rounded-2xl relative top-0 border-[1px]" title="Get Prayer Times" onPress={getPrayerTimes}>
               <Text className="text-lg font-thin">
                 Select City
@@ -218,11 +203,28 @@ const sendImageToApi = async (uri) => {
             )}
           {/* SEARCH BAR */}
           </View>
+          
 
             
           
         {/* BUTTONS */}
-        <View className="flex-row">
+        <View className="flex-row -z-10">
+          {/* FETCHING SUGGESTIONS */}
+{suggestions.length > 0 && (
+              <View className={"absolute bg-slate-100 rounded-2xl z-10 w-[92%] h-[85%]"}>
+                {suggestions.map((suggestion, index) =>(
+                  <TouchableOpacity
+                  key= {index}
+                  onPress={() => {
+                    setCityName(suggestion)
+                    setSuggestions([])
+                  }}
+                  >
+                  <Text>{suggestion}</Text>
+                  </TouchableOpacity>
+                ))}
+            </View>
+            )}
           <TouchableOpacity className="w-[43%] h-2/3 rounded-2xl justify-center items-center mr-5 border-2 border-teal-200 " onPress={pickImage}>
             <Entypo name="upload" size={40} color="turquoise" />
             <Text className="text-lg mt-7 font-thin">Upload</Text>
