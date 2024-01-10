@@ -4,13 +4,16 @@ import { useRoute, useIsFocused } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
 import { Entypo, AntDesign, Feather, MaterialCommunityIcons, Ionicons, Fontisto } from '@expo/vector-icons'; 
-
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 export default HomeScreen = () => {
 
-
+  const [fajrTime, setFajrTime] = useState('');
+  const [dhuhrTime, setDhuhrTime] = useState('');
+  const [asrTime, setAsrTime] = useState('');
+  const [maghribTime, setMaghribTime] = useState('');
+  const [ishaTime, setIshaTime] = useState('');
 const navigation = useNavigation(); // Use the useNavigation hook here
 
 const handleReset = () => {
@@ -39,15 +42,19 @@ const [city, setCity] = useState('');
     try {
       const response = await fetch(`http://api.aladhan.com/v1/timingsByCity?city=${city}&country=United Arab Emirates&method=8`);
       const data = await response.json();
-      setPrayerTimes(data);
+      setFajrTime(data.data.timings.Fajr);
+      setDhuhrTime(data.data.timings.Dhuhr);
+      setAsrTime(data.data.timings.Asr);
+      setMaghribTime(data.data.timings.Maghrib);
+      setIshaTime(data.data.timings.Isha);
     } catch (error) {
       console.error("Error fetching prayer times: ", error);
       setPrayerTimes(null);
-    }
+    } 
   };
+    
 
-
-
+  
 const sendImageToApi = async (uri) => {
     const formData = new FormData();
     formData.append('image', {
@@ -93,9 +100,7 @@ const sendImageToApi = async (uri) => {
         <View className=" w-[50] h-1/3 mb-10 flex-1 m-5">
           <View className="flex-row items-center p-2">
             <MaterialCommunityIcons name="weather-sunset" size={30} color="rgb(253 224 71)" />
-            <Text className={"text-2xl ml-3 font-extralight"}>
-              Fadjr
-            </Text>
+            <Text className={"text-2xl ml-3 font-extralight"}>Fadjr</Text>
           </View>
           <View className="flex-row items-center w-full p-2">
             <Feather name="sun" size={30} color="rgb(253 224 71)" />
@@ -124,16 +129,11 @@ const sendImageToApi = async (uri) => {
         </View> 
            {/* PRAYER TIMES */}
         <View className=" h-1/3 mb-10 flex-1 items-center m-5">
-            <Text className={"text-2xl ml-3 font-extralight p-2"}>
-            13:00</Text>
-            <Text className={"text-2xl ml-3 font-extralight p-2"}>
-            13:00</Text>
-            <Text className={"text-2xl ml-3 font-extralight p-2"}>
-            13:00</Text>
-            <Text className={"text-2xl ml-3 font-extralight p-2"}>
-            13:00</Text>
-            <Text className={"text-2xl ml-3 font-extralight p-2"}>
-            13:00</Text>
+            <Text className={"text-2xl ml-3 font-extralight p-2"}>{fajrTime}</Text>
+            <Text className={"text-2xl ml-3 font-extralight p-2"}>{dhuhrTime}</Text>
+            <Text className={"text-2xl ml-3 font-extralight p-2"}>{asrTime}</Text>
+            <Text className={"text-2xl ml-3 font-extralight p-2"}>{maghribTime}</Text>
+            <Text className={"text-2xl ml-3 font-extralight p-2"}>{ishaTime}</Text>
         </View>
           
         </View>
@@ -150,11 +150,11 @@ const sendImageToApi = async (uri) => {
                 Select City
               </Text>
             </TouchableOpacity>
-            {/* {prayerTimes && (
-              <Text style={styles.result}>
+            {prayerTimes && (
+              <Text >
                 {JSON.stringify(prayerTimes, null, 2)}
               </Text>     
-            )} */}
+            )}
           {/* SEARCH BAR */}
           </View>
 
