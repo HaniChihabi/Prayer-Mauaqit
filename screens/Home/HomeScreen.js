@@ -15,8 +15,12 @@ export default HomeScreen = () => {
   const [asrTime, setAsrTime] = useState('');
   const [maghribTime, setMaghribTime] = useState('');
   const [ishaTime, setIshaTime] = useState('');
-const navigation = useNavigation(); // Use the useNavigation hook here
+  const navigation = useNavigation(); // Use the useNavigation hook here
+  const [cityName, setCityName] = useState('');
+  const [suggestions, setSuggestions] = useState([]);
+  const [displayCity, setDisplayCity] = useState(''); // New state for display in TextInput
 
+  
 const handleReset = () => {
     navigation.reset({
         index: 0,
@@ -36,9 +40,7 @@ const pickImage =  async() => {
     }
 }
 
-const [cityName, setCityName] = useState('');
-  const [prayerTimes, setPrayerTimes] = useState(null);
-  const [suggestions, setSuggestions] = useState([]);
+
 
 
   const fetchsuggestions = async  (input) => {
@@ -58,7 +60,6 @@ const [cityName, setCityName] = useState('');
           const cities = response.data.data.map(city => `${city.name}, ${city.countryCode}`);
           setSuggestions(cities)
           console.log("From fetch suggestions:", cities);
-
       }
       catch (error) {
         setSuggestions([])
@@ -72,7 +73,8 @@ const [cityName, setCityName] = useState('');
           return;
         }
         try {
-          const response = await fetch(`https://muslimsalat.com/${cityName}.json?key=821bf235767ff49d9c4e630649bd7e74`);
+          const apiKey = '821bf235767ff49d9c4e630649bd7e74'
+          const response = await fetch(`https://muslimsalat.com/${cityName}.json?key=${apiKey}`);
           const data = await response.json();
 
           console.log(data); // Log the full response
@@ -185,10 +187,11 @@ const sendImageToApi = async (uri) => {
           <View className={"justify-center items-center flex-row space-x-5 m-5"}>
             <TextInput
               placeholder="Enter City"
-              value={cityName}
+              value={displayCity}
               onChangeText={(text)=>{
-                setCityName(text)
-                fetchsuggestions(text)
+            setDisplayCity(text);
+            setCityName(text.split(',')[0]);
+            fetchsuggestions(text);
               }}
               className={"p-4 border-[1px] rounded-2xl w-[45%]"}
             />
@@ -199,11 +202,7 @@ const sendImageToApi = async (uri) => {
               </Text>
             </TouchableOpacity>
             
-            {prayerTimes && (
-              <Text >
-                {JSON.stringify(prayerTimes, null, 2)}
-              </Text>     
-            )}
+           
           {/* SEARCH BAR */}
           </View>
       
@@ -216,8 +215,9 @@ const sendImageToApi = async (uri) => {
                   <TouchableOpacity
                   key= {index}
                   onPress={() => {
-                    setCityName(suggestion)
-                    setSuggestions([])
+                    setDisplayCity(suggestion)
+                    setCityName(suggestion.split(',')[0]);
+                    setSuggestions([]);
                   }}
                   >
                   <Text>{suggestion}</Text>
