@@ -41,34 +41,6 @@ const [cityName, setCityName] = useState('');
   const [suggestions, setSuggestions] = useState([]);
 
 
-
-
-  const getPrayerTimes = async () => {
-    if(cityName.trim() === '') {
-      alert("wrong city")
-      console.log("wrong city")
-      return;
-    }
-    try {
-      const response = await fetch(`https://dailyprayer.abdulrcs.repl.co/api/${cityName}`);
-      const data = await response.json();
-      console.log({cityName})
-      if(response.status === 200) {
-        setFajrTime(data.today.timings.Fajr);
-        setDhuhrTime(data.data.timings.Dhuhr);
-        setAsrTime(data.data.timings.Asr);
-        setMaghribTime(data.data.timings.Maghrib);
-        setIshaTime(data.data.timings.Isha);
-
-    } else{
-        alert("Bali")
-    }
-    } catch (error) {
-        console.error("Error fetching prayer times: ", error);
-        setPrayerTimes(null);
-    } 
-  };
-
   const fetchsuggestions = async  (input) => {
     if (input.length > 0) {
       try {
@@ -85,12 +57,45 @@ const [cityName, setCityName] = useState('');
           const response = await axios.request(options);
           const cities = response.data.data.map(city => `${city.name}, ${city.countryCode}`);
           setSuggestions(cities)
+          console.log("From fetch suggestions:", cities);
+
       }
       catch (error) {
         setSuggestions([])
       }
     }
   }
+
+      const getPrayerTimes = async () => {
+        if (cityName.trim() === '') {
+          alert("Please enter a city");
+          return;
+        }
+        try {
+          const response = await fetch(`https://muslimsalat.com/${cityName}.json?key=821bf235767ff49d9c4e630649bd7e74`);
+          const data = await response.json();
+
+          console.log(data); // Log the full response
+          if (response.status === 200 && data) {
+            const todaysTimings = data.items[0];
+            setFajrTime(todaysTimings.fajr);  
+            console.log(todaysTimings.fajr)
+
+            setDhuhrTime(todaysTimings.dhuhr);
+            setAsrTime(todaysTimings.asr);
+            setMaghribTime(todaysTimings.maghrib);
+            setIshaTime(todaysTimings.isha);
+          } else {
+            alert("Failed to fetch prayer times");
+          }
+        } catch (error) {
+          console.error("Error fetching prayer times: ", error);
+          alert("Error fetching prayer times");
+        }
+      };
+      
+
+  
     
 
   
@@ -183,13 +188,11 @@ const sendImageToApi = async (uri) => {
               value={cityName}
               onChangeText={(text)=>{
                 setCityName(text)
-                fetchsuggestions([text])
+                fetchsuggestions(text)
               }}
-              
               className={"p-4 border-[1px] rounded-2xl w-[45%]"}
             />
 
-            
             <TouchableOpacity className="bg-amber-200 w-[45%] h-14 justify-center items-center rounded-2xl relative top-0 border-[1px]" title="Get Prayer Times" onPress={getPrayerTimes}>
               <Text className="text-lg font-thin">
                 Select City
@@ -203,10 +206,7 @@ const sendImageToApi = async (uri) => {
             )}
           {/* SEARCH BAR */}
           </View>
-          
-
-            
-          
+      
         {/* BUTTONS */}
         <View className="flex-row -z-10">
           {/* FETCHING SUGGESTIONS */}
