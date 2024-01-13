@@ -148,6 +148,9 @@ const sendImageToApi = async (uri) => {
     keyboardVerticalOffset={-100}
   >
       <SafeAreaView className="flex-1 justify-center items-center top-0 bg-white">
+      <View className={`${isKeyboardVisible ? "absolute w-full h-[70%] top-0 bg-white z-10 justify-center items-center" : "bg-white"}`}>
+  <Text className={"text-lg font-light top-12"}>Enter a city</Text>
+        </View>
 
         {/* CITY NAME */}
         <View className="  h-56 items-center justify-center">
@@ -206,8 +209,6 @@ const sendImageToApi = async (uri) => {
           
         </View>
 {/* SEARCH BUTTON */}
-<View className={`${isKeyboardVisible ? "absolute w-full h-[100%] bg-white -z-10" : "bg-white"}`}>
-        </View>
           <View className={`justify-center items-center flex-row space-x-5 m-5 }`}>
             <TextInput
               placeholder="Enter City"
