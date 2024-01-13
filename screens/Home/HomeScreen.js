@@ -1,4 +1,4 @@
-import {View, Text, TextInput, Button, Stylesheet, TouchableOpacity, Dimensions, LogBox, SafeAreaView, StyleSheet} from 'react-native'
+import {View, KeyboardAvoidingView, Platform, Keyboard, Text, TextInput, Button, Stylesheet, TouchableOpacity, Dimensions, LogBox, SafeAreaView, StyleSheet} from 'react-native'
 import React, { useState, useEffect } from 'react';
 import { useRoute, useIsFocused } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native';
@@ -19,7 +19,24 @@ export default HomeScreen = () => {
   const [cityName, setCityName] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const [displayCity, setDisplayCity] = useState(''); // New state for display in TextInput
+  const [isKeyboardVisible, setKeyboardVisible] = useState(false);
 
+
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      () => setKeyboardVisible(true),
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      () => setKeyboardVisible(false),
+    );
+  
+    return () => {
+      keyboardDidHideListener.remove();
+      keyboardDidShowListener.remove();
+    };
+  }, []);
   
 const handleReset = () => {
     navigation.reset({
@@ -125,7 +142,11 @@ const sendImageToApi = async (uri) => {
   };
     return(
 
-
+<KeyboardAvoidingView
+    behavior={Platform.OS === "ios" ? "padding" : "height"}
+    style={{ flex: 1 }}
+    keyboardVerticalOffset={-100}
+  >
       <SafeAreaView className="flex-1 justify-center items-center top-0 bg-white">
 
         {/* CITY NAME */}
@@ -141,7 +162,8 @@ const sendImageToApi = async (uri) => {
         </TouchableOpacity>
 
         {/* BIG SCREEN */}
-    <View className={"flex-row w-11/12 rounded-3xl border-amber-200"}>
+        <View className={`${isKeyboardVisible ? "hidden w-[100%] h-[200%]" : "bg-white"}`}>
+    <View className={"flex-row w-11/12 rounded-3xl border-amber-200 -z-10"}>
       {/* PRAYER NAMES */}
         <View className=" w-[50] h-1/3 mb-10 flex-1 m-5">
           <View className="flex-row items-center p-2">
@@ -183,15 +205,16 @@ const sendImageToApi = async (uri) => {
         </View>
           
         </View>
+        </View>
 {/* SEARCH BUTTON */}
-          <View className={"justify-center items-center flex-row space-x-5 m-5"}>
+          <View className={`justify-center items-center flex-row space-x-5 m-5 }`}>
             <TextInput
               placeholder="Enter City"
               value={displayCity}
               onChangeText={(text)=>{
-            setDisplayCity(text);
-            setCityName(text.split(',')[0]);
-            fetchsuggestions(text);
+                setDisplayCity(text);
+                setCityName(text.split(',')[0]);
+                fetchsuggestions(text);
               }}
               className={"p-4 border-[1px] rounded-2xl w-[45%]"}
             />
@@ -209,8 +232,8 @@ const sendImageToApi = async (uri) => {
         {/* BUTTONS */}
         <View className="flex-row -z-10">
           {/* FETCHING SUGGESTIONS */}
-{suggestions.length > 0 && (
-              <View className={"absolute bg-slate-100 rounded-2xl z-10 w-[92%] h-[85%]"}>
+            {suggestions.length > 0 && (
+              <View className={` ${isKeyboardVisible ? "absolute bg-white rounded-2xl w-[92%] z-10 bottom-[130%] h-[150%] justify-center items-center" : "hidden"}`}>
                 {suggestions.map((suggestion, index) =>(
                   <TouchableOpacity
                   key= {index}
@@ -235,6 +258,7 @@ const sendImageToApi = async (uri) => {
           </TouchableOpacity>
         </View>
       </SafeAreaView>
+      </KeyboardAvoidingView>
     )
 }
 
