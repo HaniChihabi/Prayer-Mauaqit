@@ -162,7 +162,7 @@ const sendImageToApi = async (uri) => {
         </TouchableOpacity>
 
         {/* BIG SCREEN */}
-        <View className={`${isKeyboardVisible ? "hidden w-[100%] h-[200%]" : "bg-white"}`}>
+        
     <View className={"flex-row w-11/12 rounded-3xl border-amber-200 -z-10"}>
       {/* PRAYER NAMES */}
         <View className=" w-[50] h-1/3 mb-10 flex-1 m-5">
@@ -205,8 +205,9 @@ const sendImageToApi = async (uri) => {
         </View>
           
         </View>
-        </View>
 {/* SEARCH BUTTON */}
+<View className={`${isKeyboardVisible ? "absolute w-full h-[100%] bg-white -z-10" : "bg-white"}`}>
+        </View>
           <View className={`justify-center items-center flex-row space-x-5 m-5 }`}>
             <TextInput
               placeholder="Enter City"
@@ -233,7 +234,7 @@ const sendImageToApi = async (uri) => {
         <View className="flex-row -z-10">
           {/* FETCHING SUGGESTIONS */}
             {suggestions.length > 0 && (
-              <View className={` ${isKeyboardVisible ? "absolute bg-white rounded-2xl w-[92%] z-10 bottom-[130%] h-[150%] justify-center items-center" : "hidden"}`}>
+              <View className={` ${isKeyboardVisible ? "absolute bg-white rounded-2xl w-[92%] z-30 bottom-[130%] h-[150%] justify-center items-center" : "hidden"}`}>
                 {suggestions.map((suggestion, index) =>(
                   <TouchableOpacity
                   key= {index}
@@ -241,9 +242,10 @@ const sendImageToApi = async (uri) => {
                     setDisplayCity(suggestion)
                     setCityName(suggestion.split(',')[0]);
                     setSuggestions([]);
+                    Keyboard.dismiss(); // Add this line to dismiss the keyboard
                   }}
                   >
-                  <Text>{suggestion}</Text>
+                  <Text className={"text-lg"}>{suggestion}</Text>
                   </TouchableOpacity>
                 ))}
             </View>
