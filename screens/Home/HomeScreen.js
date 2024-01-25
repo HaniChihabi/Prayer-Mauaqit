@@ -1,4 +1,4 @@
-import {View, KeyboardAvoidingView, Platform, Keyboard, Text, TextInput, Button, Stylesheet, TouchableOpacity, Dimensions, LogBox, SafeAreaView, StyleSheet, ImageBackground} from 'react-native'
+import {View, Alert, KeyboardAvoidingView, Platform, Keyboard, Text, TextInput, Button, Stylesheet, TouchableOpacity, Dimensions, LogBox, SafeAreaView, StyleSheet, ImageBackground} from 'react-native'
 import React, { useState, useEffect } from 'react';
 import { useRoute, useIsFocused } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native';
@@ -114,9 +114,27 @@ const handleReset = () => {
     })
 }
 
-const handleResetAndDeleteData = async () => {
-  await deleteStoredData();
-  handleReset();
+const handleResetAndDeleteData = () => {
+  Alert.alert(
+    "Confirm Reset",
+    "Every data will be resetted. Are you sure you want to reset?"
+    ,
+    [
+      {
+        text: "No",
+        onPress: () => console.log("Cancel Pressed"),
+        style: "cancel"
+      },
+      { 
+        text: "Yes", 
+        onPress: async () => {
+          await deleteStoredData();
+          handleReset();
+        }
+      }
+    ],
+    { cancelable: false }
+  );
 };
 
 const pickImage =  async() => {
