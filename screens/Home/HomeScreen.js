@@ -1,4 +1,4 @@
-import {View, KeyboardAvoidingView, Platform, Keyboard, Text, TextInput, Button, Stylesheet, TouchableOpacity, Dimensions, LogBox, SafeAreaView, StyleSheet} from 'react-native'
+import {View, KeyboardAvoidingView, Platform, Keyboard, Text, TextInput, Button, Stylesheet, TouchableOpacity, Dimensions, LogBox, SafeAreaView, StyleSheet, ImageBackground} from 'react-native'
 import React, { useState, useEffect } from 'react';
 import { useRoute, useIsFocused } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native';
@@ -6,6 +6,9 @@ import * as ImagePicker from 'expo-image-picker';
 import { Entypo, AntDesign, Feather, MaterialCommunityIcons, Ionicons, Fontisto } from '@expo/vector-icons'; 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+import RNCalendarEvents from 'react-native-calendar-events';
+
+
 
 
 export default HomeScreen = () => {
@@ -21,6 +24,26 @@ export default HomeScreen = () => {
   const [displayCity, setDisplayCity] = useState(''); // New state for display in TextInput
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
   
+
+  const deleteStoredData = async () => {
+    try {
+      await AsyncStorage.removeItem('savedCityData');
+      console.log("City data deleted successfully");
+      // Optionally, reset the state variables to their initial state
+      setCityName('');
+      setDisplayCity('');
+      setFajrTime('');
+      setDhuhrTime('');
+      setAsrTime('');
+      setMaghribTime('');
+      setIshaTime('');
+    } catch (error) {
+      console.error("Error deleting city data: ", error);
+    }
+  };
+  
+
+
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
       'keyboardDidShow',
@@ -90,6 +113,12 @@ const handleReset = () => {
         routes:[{name: 'Onboarding'}],
     })
 }
+
+const handleResetAndDeleteData = async () => {
+  await deleteStoredData();
+  handleReset();
+};
+
 const pickImage =  async() => {
     let result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -193,32 +222,28 @@ const sendImageToApi = async (uri) => {
     }
   };
     return(
+      <ImageBackground source={require('../Onboarding/assets/fajr.jpg')} style={{ flex: 1 }}>
 
 <KeyboardAvoidingView
     behavior={Platform.OS === "ios" ? "padding" : "height"}
     style={{ flex: 1 }}
-    keyboardVerticalOffset={-100}
+    keyboardVerticalOffset={-500}
   >
       <SafeAreaView className="flex-1 justify-center items-center top-0 bg-white">
-      <View className={`${isKeyboardVisible ? "absolute w-full h-[70%] top-0 bg-white -z-10 justify-center items-center" : "bg-white"}`}>
+      <View className={`${isKeyboardVisible ? "absolute w-full h-[60%] top-0 bg-white -z-10 justify-center items-center" : "hidden"}`}>
         <Text className={"text-lg font-extralight top-12"}>{cityName}</Text>
       </View>
 
         {/* CITY NAME */}
-        <View className="  h-56 items-center justify-center">
-          <Text className="text-4xl font-medium">
-            Asr
-          </Text>
-        </View>
-
+       
         {/* RESET BUTTON */}
-        <TouchableOpacity className="w-10 h-10  justify-center items-center absolute top-[10%] right-[10%] rounded-3xl bg-slate-50 border-amber-200" onPress={handleReset}>
+        <TouchableOpacity className="w-10 h-10  justify-center items-center absolute top-[5%] right-[5%] rounded-3xl bg-slate-50 border-amber-200" onPress={handleResetAndDeleteData}>
             <Text className="font-light text-lg">i</Text>
         </TouchableOpacity>
 
         {/* BIG SCREEN */}
         
-    <View className={"flex-row w-11/12 rounded-3xl border-amber-200 -z-20"}>
+    <View className={"flex-row w-11/12 mt-[50%] rounded-3xl border-amber-200 -z-20"}>
       {/* PRAYER NAMES */}
         <View className=" w-[50] h-1/3 mb-10 flex-1 m-5">
           <View className="flex-row items-center p-2">
@@ -258,8 +283,8 @@ const sendImageToApi = async (uri) => {
             <Text className={"text-2xl ml-3 font-extralight p-2"}>{maghribTime}</Text>
             <Text className={"text-2xl ml-3 font-extralight p-2"}>{ishaTime}</Text>
         </View>
-          
         </View>
+        
 {/* SEARCH BUTTON */}
           <View className={`justify-center items-center flex-row space-x-5 m-5 }`}>
             <TextInput
@@ -273,7 +298,7 @@ const sendImageToApi = async (uri) => {
               className={"p-4 border-[1px] rounded-2xl w-[45%]"}
             />
 
-            <TouchableOpacity className="bg-amber-200 w-[45%] h-14 justify-center items-center rounded-2xl relative top-0 border-[1px]" title="Get Prayer Times" onPress={handleSelectCity}>
+            <TouchableOpacity className="bg-amber-200 w-[45%] h-14 justify-center items-center rounded-2xl relative top-0 border" title="Get Prayer Times" onPress={handleSelectCity}>
               <Text className="text-lg font-thin">
                 Select City
               </Text>
@@ -282,7 +307,12 @@ const sendImageToApi = async (uri) => {
            
           {/* SEARCH BAR */}
           </View>
-      
+
+      <TouchableOpacity className="w-[90%] mb-[5%] h-[10%] rounded-2xl justify-center items-center border-2 border-amber-400	">
+            <AntDesign name="calendar" size={40} color="orange" />
+            {/* <Text className="text-lg font-extralight mt-5" >Send '{cityName}' times to calendar</Text> */}
+      </TouchableOpacity>
+
         {/* BUTTONS */}
         <View className="flex-row -z-10">
           {/* FETCHING SUGGESTIONS */}
@@ -304,13 +334,14 @@ const sendImageToApi = async (uri) => {
             <Entypo name="upload" size={40} color="turquoise" />
             <Text className="text-lg mt-7 font-thin">Upload</Text>
           </TouchableOpacity>
-          <TouchableOpacity className="w-[43%] h-2/3 rounded-2xl justify-center items-center border border-red-200">
+          <TouchableOpacity className="w-[43%] h-2/3 rounded-2xl justify-center items-center border-2 border-red-200">
             <AntDesign name="scan1" size={40} color="pink" />
             <Text className="text-lg font-thin mt-7" >Scan</Text>
           </TouchableOpacity>
         </View>
       </SafeAreaView>
       </KeyboardAvoidingView>
+      </ImageBackground>
     )
 }
 
