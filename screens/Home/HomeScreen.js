@@ -20,8 +20,7 @@ export default HomeScreen = () => {
   const [suggestions, setSuggestions] = useState([]);
   const [displayCity, setDisplayCity] = useState(''); // New state for display in TextInput
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
-
-
+  
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
       'keyboardDidShow',
@@ -37,6 +36,53 @@ export default HomeScreen = () => {
       keyboardDidShowListener.remove();
     };
   }, []);
+
+  const saveCityData = async (city, prayerTimes) => {
+    try {
+      const cityData = { city, prayerTimes };
+      await AsyncStorage.setItem('savedCityData', JSON.stringify(cityData));
+      console.log("saved citydata")
+    } catch (error) {
+      console.error("Error saving city data: ", error);
+    }
+  };
+
+  useEffect(() => {
+    const loadCityData = async () => {
+      try {
+        const savedCityData = await AsyncStorage.getItem('savedCityData');
+        if (savedCityData !== null) {
+          const { city, prayerTimes } = JSON.parse(savedCityData);
+          setCityName(city);
+          setDisplayCity(city);
+          setFajrTime(prayerTimes.fajr);
+          setDhuhrTime(prayerTimes.dhuhr);
+          setAsrTime(prayerTimes.asr);
+          setMaghribTime(prayerTimes.maghrib);
+          setIshaTime(prayerTimes.isha);
+          console.log("Loaded city data: ", city, prayerTimes);
+        } else {
+          console.log("No saved city data found");
+        }
+      } catch (error) {
+        console.error("Error loading city data: ", error);
+      }
+    };
+  
+    loadCityData();
+  }, []);
+  
+  
+
+  const handleSelectCity = () => {
+    const selectedCity = displayCity.split(',')[0];
+    setCityName(selectedCity);
+    setSuggestions([]); // Clear suggestions here
+    getPrayerTimes();
+    saveCityData(selectedCity);
+  };
+  
+  
   
 const handleReset = () => {
     navigation.reset({
@@ -56,9 +102,6 @@ const pickImage =  async() => {
         console.log(result.uri);
     }
 }
-
-
-
 
   const fetchsuggestions = async  (input) => {
     if (input.length > 0) {
@@ -82,36 +125,45 @@ const pickImage =  async() => {
         setSuggestions([])
       }
     }
+
   }
 
-      const getPrayerTimes = async () => {
-        if (cityName.trim() === '') {
-          alert("Please enter a city");
-          return;
-        }
-        try {
-          const apiKey = '821bf235767ff49d9c4e630649bd7e74'
-          const response = await fetch(`https://muslimsalat.com/${cityName}.json?key=${apiKey}`);
-          const data = await response.json();
-
-          console.log(data); // Log the full response
-          if (response.status === 200 && data) {
-            const todaysTimings = data.items[0];
-            setFajrTime(todaysTimings.fajr);  
-            console.log(todaysTimings.fajr)
-
-            setDhuhrTime(todaysTimings.dhuhr);
-            setAsrTime(todaysTimings.asr);
-            setMaghribTime(todaysTimings.maghrib);
-            setIshaTime(todaysTimings.isha);
-          } else {
-            alert("Failed to fetch prayer times");
-          }
-        } catch (error) {
-          console.error("Error fetching prayer times: ", error);
-          alert("Error fetching prayer times");
-        }
-      };
+  const getPrayerTimes = async () => {
+    if (cityName.trim() === '') {
+      alert("Please enter a city");
+      return;
+    }
+    try {
+      const apiKey = '821bf235767ff49d9c4e630649bd7e74';
+      const response = await fetch(`https://muslimsalat.com/${cityName}.json?key=${apiKey}`);
+      const data = await response.json();
+  
+      if (response.status === 200 && data) {
+        const todaysTimings = data.items[0];
+        setFajrTime(todaysTimings.fajr);
+        setDhuhrTime(todaysTimings.dhuhr);
+        setAsrTime(todaysTimings.asr);
+        setMaghribTime(todaysTimings.maghrib);
+        setIshaTime(todaysTimings.isha);
+        Keyboard.dismiss();
+  
+        // Save the city name and prayer times
+        saveCityData(cityName, {
+          fajr: todaysTimings.fajr,
+          dhuhr: todaysTimings.dhuhr,
+          asr: todaysTimings.asr,
+          maghrib: todaysTimings.maghrib,
+          isha: todaysTimings.isha
+        });
+      } else {
+        alert("Failed to fetch prayer times");
+      }
+    } catch (error) {
+      console.error("Error fetching prayer times: ", error);
+      alert("Error fetching prayer times");
+    }
+  };
+  
       
 
   
@@ -148,25 +200,25 @@ const sendImageToApi = async (uri) => {
     keyboardVerticalOffset={-100}
   >
       <SafeAreaView className="flex-1 justify-center items-center top-0 bg-white">
-      <View className={`${isKeyboardVisible ? "absolute w-full h-[70%] top-0 bg-white z-10 justify-center items-center" : "bg-white"}`}>
-  <Text className={"text-lg font-light top-12"}>Enter a city</Text>
-        </View>
+      <View className={`${isKeyboardVisible ? "absolute w-full h-[70%] top-0 bg-white -z-10 justify-center items-center" : "bg-white"}`}>
+        <Text className={"text-lg font-extralight top-12"}>{cityName}</Text>
+      </View>
 
         {/* CITY NAME */}
         <View className="  h-56 items-center justify-center">
-          <Text className="text-xl font-medium">
+          <Text className="text-4xl font-medium">
             Asr
           </Text>
         </View>
 
         {/* RESET BUTTON */}
-        <TouchableOpacity className="w-10 h-10  justify-center items-center absolute top-[10%] right-[10%] rounded-2xl border-amber-200" onPress={handleReset}>
+        <TouchableOpacity className="w-10 h-10  justify-center items-center absolute top-[10%] right-[10%] rounded-3xl bg-slate-50 border-amber-200" onPress={handleReset}>
             <Text className="font-light text-lg">i</Text>
         </TouchableOpacity>
 
         {/* BIG SCREEN */}
         
-    <View className={"flex-row w-11/12 rounded-3xl border-amber-200 -z-10"}>
+    <View className={"flex-row w-11/12 rounded-3xl border-amber-200 -z-20"}>
       {/* PRAYER NAMES */}
         <View className=" w-[50] h-1/3 mb-10 flex-1 m-5">
           <View className="flex-row items-center p-2">
@@ -221,7 +273,7 @@ const sendImageToApi = async (uri) => {
               className={"p-4 border-[1px] rounded-2xl w-[45%]"}
             />
 
-            <TouchableOpacity className="bg-amber-200 w-[45%] h-14 justify-center items-center rounded-2xl relative top-0 border-[1px]" title="Get Prayer Times" onPress={getPrayerTimes}>
+            <TouchableOpacity className="bg-amber-200 w-[45%] h-14 justify-center items-center rounded-2xl relative top-0 border-[1px]" title="Get Prayer Times" onPress={handleSelectCity}>
               <Text className="text-lg font-thin">
                 Select City
               </Text>
@@ -241,9 +293,6 @@ const sendImageToApi = async (uri) => {
                   key= {index}
                   onPress={() => {
                     setDisplayCity(suggestion)
-                    setCityName(suggestion.split(',')[0]);
-                    setSuggestions([]);
-                    Keyboard.dismiss(); // Add this line to dismiss the keyboard
                   }}
                   >
                   <Text className={"text-lg"}>{suggestion}</Text>
