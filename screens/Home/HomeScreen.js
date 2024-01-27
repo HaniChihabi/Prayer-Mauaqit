@@ -6,7 +6,6 @@ import * as ImagePicker from 'expo-image-picker';
 import { Entypo, AntDesign, Feather, MaterialCommunityIcons, Ionicons, Fontisto } from '@expo/vector-icons'; 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import RNCalendarEvents from 'react-native-calendar-events';
 
 
 
@@ -183,6 +182,9 @@ const pickImage =  async() => {
     try {
       const apiKey = '821bf235767ff49d9c4e630649bd7e74';
       const response = await fetch(`https://muslimsalat.com/${cityName}.json?key=${apiKey}`);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
       const data = await response.json();
   
       if (response.status === 200 && data) {
@@ -203,11 +205,11 @@ const pickImage =  async() => {
           isha: todaysTimings.isha
         });
       } else {
-        alert("Failed to fetch prayer times");
+        alert("Failed to fetch prayer times. Please try again");
       }
     } catch (error) {
       console.error("Error fetching prayer times: ", error);
-      alert("Error fetching prayer times");
+      alert("Error fetching prayer times. Please try again");
     }
   };
   
@@ -239,6 +241,9 @@ const sendImageToApi = async (uri) => {
       setAnalysisResult('Error processing image');
     }
   };
+
+
+
     return(
       <ImageBackground source={require('../Onboarding/assets/fajr.jpg')} style={{ flex: 1 }}>
 
@@ -326,7 +331,8 @@ const sendImageToApi = async (uri) => {
           {/* SEARCH BAR */}
           </View>
 
-      <TouchableOpacity className="w-[90%] mb-[5%] h-[10%] rounded-2xl justify-center items-center border-2 border-amber-400	">
+      <TouchableOpacity className="w-[90%] mb-[5%] h-[10%] rounded-2xl justify-center items-center border-2 border-amber-400	"  
+>
             <AntDesign name="calendar" size={40} color="orange" />
             {/* <Text className="text-lg font-extralight mt-5" >Send '{cityName}' times to calendar</Text> */}
       </TouchableOpacity>
