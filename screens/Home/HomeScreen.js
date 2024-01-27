@@ -23,60 +23,7 @@ export default HomeScreen = () => {
   const [suggestions, setSuggestions] = useState([]);
   const [displayCity, setDisplayCity] = useState(''); // New state for display in TextInput
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
-
-  const addPrayerTimesToCalendar = async () => {
-    // Request permissions
-    const { status } = await Calendar.requestCalendarPermissionsAsync();
-    if (status !== 'granted') {
-      Alert.alert('Permissions required', 'We need calendar permissions to create prayer time events');
-      return;
-    }
   
-    // Find existing calendars
-    const calendars = await Calendar.getCalendarsAsync(Calendar.EntityTypes.EVENT);
-    
-    // Filter for suitable calendar (e.g., local, not subscribed or read-only)
-    const suitableCalendar = calendars.find(calendar => calendar.allowsModifications && calendar.source.type === 'local');
-  
-    if (!suitableCalendar) {
-      Alert.alert('No suitable calendar found', 'Please ensure you have a local calendar that allows modifications.');
-      return;
-    }
-  
-    // Define a helper to add an event
-    const addEvent = async (title, startDate, endDate) => {
-      const eventId = await Calendar.createEventAsync(suitableCalendar.id, {
-        title,
-        startDate,
-        endDate,
-        timeZone: 'GMT', // Adjust based on your needs
-      });
-      console.log(`Event created: ${eventId}`);
-    };
-  
-    // Prepare dates for the prayer times - assuming they are for today
-    const today = new Date();
-    const prayerTimes = [
-      { title: 'Fajr', time: fajrTime },
-      { title: 'Dhuhr', time: dhuhrTime },
-      { title: 'Asr', time: asrTime },
-      { title: 'Maghrib', time: maghribTime },
-      { title: 'Isha', time: ishaTime },
-    ];
-  
-    // For each prayer time, add an event
-    for (const { title, time } of prayerTimes) {
-      const [hours, minutes] = time.split(':').map(Number); // Assuming time is in HH:mm format
-      const startDate = new Date(today.getFullYear(), today.getMonth(), today.getDate(), hours, minutes);
-      const endDate = new Date(startDate.getTime() + 30 * 60000); // Assuming 30 minutes duration for each prayer
-  
-      await addEvent(`${title} Prayer`, startDate, endDate);
-    }
-  
-    Alert.alert('Success', 'Prayer times added to your calendar');
-  };
-  
-
   const deleteStoredData = async () => {
     try {
       await AsyncStorage.removeItem('savedCityData');
@@ -384,8 +331,7 @@ const sendImageToApi = async (uri) => {
           {/* SEARCH BAR */}
           </View>
 
-      <TouchableOpacity className="w-[90%] mb-[5%] h-[10%] rounded-2xl justify-center items-center border-2 border-amber-400	"    onPress={addPrayerTimesToCalendar}
-
+      <TouchableOpacity className="w-[90%] mb-[5%] h-[10%] rounded-2xl justify-center items-center border-2 border-amber-400	"  
 >
             <AntDesign name="calendar" size={40} color="orange" />
             {/* <Text className="text-lg font-extralight mt-5" >Send '{cityName}' times to calendar</Text> */}
