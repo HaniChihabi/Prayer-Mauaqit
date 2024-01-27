@@ -174,6 +174,63 @@ const pickImage =  async() => {
 
   }
 
+  async function fetchMonthlyPrayerTimes(cityName) {
+    try {
+      const apiKey = '821bf235767ff49d9c4e630649bd7e74';
+      const month = new Date().getMonth() + 1; // Current month (1-12)
+      const year = new Date().getFullYear(); // Current year
+      // Adjust the URL path according to the API documentation for monthly data
+      const response = await axios.get(`https://api.example.com/${cityName}/${year}/${month}?key=${apiKey}`);
+      const prayerTimes = response.data; // Adjust according to the actual API response structure
+      
+      // Here you could save the data to AsyncStorage or proceed to process it
+      await AsyncStorage.setItem('monthlyPrayerTimes', JSON.stringify(prayerTimes));
+  
+      return prayerTimes;
+    } catch (error) {
+      console.error("Error fetching monthly prayer times:", error);
+      throw error; // Rethrow or handle as needed
+    }
+  }
+  
+  // Function to add prayer times to the calendar
+  async function addPrayerTimesToCalendar(prayerTimes) {
+    const { status } = await Calendar.requestCalendarPermissionsAsync();
+    if (status !== 'granted') {
+      alert('Calendar permission is required to add prayer times');
+      return;
+    }
+  
+    const calendars = await Calendar.getCalendarsAsync(Calendar.EntityTypes.EVENT);
+    const suitableCalendar = calendars.find(calendar => calendar.allowsModifications);
+  
+    if (!suitableCalendar) {
+      alert('No suitable calendar found');
+      return;
+    }
+  
+    for (const day of prayerTimes) { // Adjust iteration based on your data structure
+      // Assume `day` has date and prayer times for that date
+      for (const prayer of day.prayers) { // Adjust based on your data structure
+        const { title, time } = prayer; // Adjust these variables based on your structure
+        const startDate = new Date(`${day.date}T${time}:00`); // Construct a Date object
+        const endDate = new Date(startDate.getTime() + 30 * 60000); // 30 minutes later
+  
+        await Calendar.createEventAsync(suitableCalendar.id, {
+          title: `${title} Prayer`,
+          startDate,
+          endDate,
+          timeZone: 'Local', // or specific timeZone as needed
+        });
+      }
+    }
+  
+    alert('Prayer times added to calendar');
+  }
+  
+  // Example usage
+ 
+
   const getPrayerTimes = async () => {
     if (cityName.trim() === '') {
       alert("Please enter a city");
@@ -181,11 +238,12 @@ const pickImage =  async() => {
     }
     try {
       const apiKey = '821bf235767ff49d9c4e630649bd7e74';
-      const response = await fetch(`https://muslimsalat.com/${cityName}.json?key=${apiKey}`);
+      const response = await fetch(`https://muslimsalat.com/${cityName}/monthly.json?key=${apiKey}`);
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
       const data = await response.json();
+      console.log(data)
   
       if (response.status === 200 && data) {
         const todaysTimings = data.items[0];
@@ -215,7 +273,15 @@ const pickImage =  async() => {
   
       
 
-  
+  const processMonthlyPrayerTimes = async (cityName) => {
+    try {
+      const prayerTimes = await fetchMonthlyPrayerTimes(cityName);
+      await addPrayerTimesToCalendar(prayerTimes);
+    } catch (error) {
+      console.error("Failed to process monthly prayer times:", error);
+      Alert.alert("Error", "Failed to add prayer times to calendar.");
+    }
+  };
     
 
   
@@ -331,7 +397,7 @@ const sendImageToApi = async (uri) => {
           {/* SEARCH BAR */}
           </View>
 
-      <TouchableOpacity className="w-[90%] mb-[5%] h-[10%] rounded-2xl justify-center items-center border-2 border-amber-400	"  
+      <TouchableOpacity className="w-[90%] mb-[5%] h-[10%] rounded-2xl justify-center items-center border-2 border-amber-400	"  onPress={() => processMonthlyPrayerTimes(cityName)}
 >
             <AntDesign name="calendar" size={40} color="orange" />
             {/* <Text className="text-lg font-extralight mt-5" >Send '{cityName}' times to calendar</Text> */}
