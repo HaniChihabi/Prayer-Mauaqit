@@ -34,7 +34,3 @@ This React Native application provides dynamic Islamic prayer times based on the
 - **Custom Hooks and Effects**: Utilizes React's `useState` and `useEffect` for state management and handling side effects.
 - **Responsive Design**: Ensures a consistent experience across devices.
 - **Debugging and Error Handling**: For API calls and AsyncStorage operations.
-
----
-
-This application aims to provide a comprehensive tool for observing Islamic prayer times, enhanced with functionalities for personalization and improved user engagement. It's built with React Native, showcasing dynamic data fetching, persistent storage, and an engaging UI/UX design.
